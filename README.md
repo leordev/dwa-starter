@@ -17,14 +17,27 @@ If you are developing a production application, we recommend updating the config
 export default {
   // other rules...
   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
+    ecmaVersion: "latest",
+    sourceType: "module",
+    project: ["./tsconfig.json", "./tsconfig.node.json"],
     tsconfigRootDir: __dirname,
   },
-}
+};
 ```
 
 - Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
 - Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
 - Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+
+## error
+
+        else if ((t = globalThis == null ? void 0 : globalThis.navigator) != null && t.serviceWorker) {
+            if (!await navigator.serviceWorker.getRegistration("/")) {
+                const s = n.path || (globalThis.document ? (r = document == null ? void 0 : document.currentScript) == null ? void 0 : r.src :
+                >>>>> (i = import.meta) == null ? void 0 : i.url);
+                >>>>> Uncaught SyntaxError: Cannot use 'import.meta' outside a module (at sw.js:12:106921)
+
+                s && navigator.serviceWorker.register(s, {
+                    type: "module"
+                }).catch(a=>{
+                    console.error("DWeb networking feature installation failed: ", a)

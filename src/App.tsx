@@ -11,8 +11,8 @@ export const App = () => {
   return (
     <Router>
       <div className="flex md:min-h-screen">
-        {isDesktop && <Sidebar className="min-h-full" />}
-        <div className="p-4 w-full">
+        {isDesktop && <Sidebar className="min-h-screen fixed bg-white w-64" />}
+        <div className={`p-4 ${isDesktop ? "ml-64" : "w-full"}`}>
           {!isDesktop && <SidebarButton />}
           <Routes>
             <Route path="/settings" element={<Settings />} />
