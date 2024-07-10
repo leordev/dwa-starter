@@ -1,6 +1,18 @@
-import { type ClassValue, clsx } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { type ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
+import { toast } from "sonner";
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
+}
+
+export function toastSuccess(message: string, description?: string) {
+  toast.success(message, { description });
+}
+
+export function toastError(message: string, error?: unknown) {
+  const errorMessage = error
+    ? (error as Error)?.message || "Unknown error"
+    : undefined;
+  toast.error(message, { description: errorMessage });
 }

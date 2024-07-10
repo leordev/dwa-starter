@@ -69,12 +69,11 @@ export const useWeb5 = () => {
   const [bearerDid, setBearerDid] = useState<BearerDid | undefined>(undefined);
 
   useEffect(() => {
-    if (context.web5Connection) {
+    if (context.web5Connection && !bearerDid) {
       const loadBearerDid = async () => {
         if (!context.web5Connection) {
           return;
         }
-        console.info({ web5Connection: context.web5Connection });
         const userAgent = context.web5Connection.web5.agent as Web5UserAgent;
         const identity = await userAgent.identity.get({
           didUri: context.web5Connection.did,

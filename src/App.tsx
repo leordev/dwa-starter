@@ -6,6 +6,7 @@ import { Settings } from "@/pages/Settings.tsx";
 import { Home } from "@/pages/Home.tsx";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
 import { Web5Provider } from "@/web5/Web5Provider";
 
 export const App = () => {
@@ -16,11 +17,7 @@ export const App = () => {
         <Web5Provider>
           <div className="flex md:min-h-screen">
             {isDesktop && <Sidebar className="min-h-screen fixed w-64" />}
-            <div
-              className={`p-4 ${
-                isDesktop ? "ml-64" : "w-full"
-              } max-w-screen-lg`}
-            >
+            <div className={`p-4 w-full ${isDesktop ? "ml-64" : ""}`}>
               {!isDesktop && <SidebarButton />}
               <Routes>
                 <Route path="/settings" element={<Settings />} />
@@ -28,6 +25,7 @@ export const App = () => {
               </Routes>
             </div>
             <PWABadge />
+            <Toaster />
           </div>
         </Web5Provider>
       </ThemeProvider>
