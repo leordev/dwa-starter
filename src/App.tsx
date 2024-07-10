@@ -1,8 +1,4 @@
-// import { useState } from "react";
-// import reactLogo from "./assets/react.svg";
-// import appLogo from "/favicon.svg";
-
-import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import PWABadge from "@/PWABadge.tsx";
 import { Sidebar } from "@/layout/Sidebar.tsx";

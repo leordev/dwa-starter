@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { HouseIcon, LogInIcon, SettingsIcon, LucideIcon } from "lucide-react";
 
@@ -8,8 +7,6 @@ import { Button } from "@/components/ui/button";
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export const Sidebar = ({ className }: SidebarProps) => {
-  const [isOpen, setIsOpen] = useState(false);
-
   return (
     <nav
       className={cn(
