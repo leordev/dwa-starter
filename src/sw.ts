@@ -5,18 +5,9 @@ import {
   precacheAndRoute,
 } from "workbox-precaching";
 import { NavigationRoute, registerRoute } from "workbox-routing";
-
-import { activatePolyfills } from "./web5/activate-polyfills";
+import { activatePolyfills } from "./web-features";
 
 declare let self: ServiceWorkerGlobalScope;
-
-activatePolyfills({
-  onCacheCheck(_event, _route) {
-    return {
-      ttl: 30000,
-    };
-  },
-});
 
 self.addEventListener("message", (event) => {
   if (event.data && event.data.type === "SKIP_WAITING") self.skipWaiting();
@@ -37,3 +28,12 @@ if (import.meta.env.DEV) allowlist = [/^\/$/];
 registerRoute(
   new NavigationRoute(createHandlerBoundToURL("index.html"), { allowlist })
 );
+
+activatePolyfills({
+  serviceWorker: true,
+  onCacheCheck() {
+    return {
+      ttl: 30000,
+    };
+  },
+});
