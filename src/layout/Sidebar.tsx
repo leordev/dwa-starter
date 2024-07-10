@@ -13,6 +13,7 @@ import { useState } from "react";
 
 import "./Sidebar.css";
 import { Web5Connection } from "@/web5/Web5Connection";
+import { ModeToggle } from "@/components/mode-toggle";
 
 export const SidebarButton = () => {
   const [open, setOpen] = useState(false);
@@ -26,30 +27,42 @@ export const SidebarButton = () => {
         <div className="sidebar-overlay" onClick={() => setOpen(false)}></div>
       )}
       <div className={`sidebar-content ${open ? "open" : "closed"}`}>
-        <div className="absolute right-2 top-2">
+        <div className="absolute right-4 top-2">
           <Button variant="ghost" onClick={() => setOpen(!open)}>
             <XIcon className="h-6 w-6" />
           </Button>
         </div>
-        <Sidebar className="min-h-full" />
+        <Sidebar
+          className="mt-8 min-h-full"
+          onItemClick={() => setOpen(false)}
+        />
       </div>
     </>
   );
 };
 
-interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
+  onItemClick?: () => void;
+}
 
-export const Sidebar = ({ className }: SidebarProps) => {
+export const Sidebar = ({ className, onItemClick }: SidebarProps) => {
   return (
     <nav className={cn("pb-12 flex flex-col justify-between", className)}>
       <div className="space-y-4 py-4">
         <div className="px-3 py-2">
-          <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
-            My DWA
-          </h2>
+          <div className="flex justify-between mb-2 px-4">
+            <h2 className="text-lg font-semibold tracking-tight">My DWA</h2>
+            <ModeToggle />
+          </div>
           <div className="space-y-1">
-            <SidebarMenuItem icon={HouseIcon} label="Home" path="/" />
             <SidebarMenuItem
+              onItemClick={onItemClick}
+              icon={HouseIcon}
+              label="Home"
+              path="/"
+            />
+            <SidebarMenuItem
+              onItemClick={onItemClick}
               icon={SettingsIcon}
               label="Settings"
               path="/settings"
@@ -68,9 +81,15 @@ interface SidebarMenuItemProps {
   icon: LucideIcon;
   label: string;
   path: string;
+  onItemClick?: () => void;
 }
 
-const SidebarMenuItem = ({ icon: Icon, label, path }: SidebarMenuItemProps) => {
+const SidebarMenuItem = ({
+  icon: Icon,
+  label,
+  path,
+  onItemClick,
+}: SidebarMenuItemProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   const isActive = location.pathname === path;
@@ -80,7 +99,10 @@ const SidebarMenuItem = ({ icon: Icon, label, path }: SidebarMenuItemProps) => {
     <Button
       variant={variant}
       className="w-full justify-start"
-      onClick={() => navigate(path)}
+      onClick={() => {
+        navigate(path);
+        onItemClick?.();
+      }}
     >
       <Icon className="mr-2 h-4 w-4" />
       {label}
