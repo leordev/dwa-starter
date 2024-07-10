@@ -1,19 +1,47 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import { HouseIcon, LogInIcon, SettingsIcon, LucideIcon } from "lucide-react";
+import {
+  HouseIcon,
+  MenuIcon,
+  XIcon,
+  LogInIcon,
+  SettingsIcon,
+  LucideIcon,
+} from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
+
+import "./Sidebar.css";
+
+export const SidebarButton = () => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <Button variant="ghost" className="m-2" onClick={() => setOpen(!open)}>
+        <MenuIcon className="h-6 w-6" />
+      </Button>
+      {open && (
+        <div className="sidebar-overlay" onClick={() => setOpen(false)}></div>
+      )}
+      <div className={`sidebar-content ${open ? "open" : "closed"}`}>
+        <div className="absolute right-2 top-2">
+          <Button variant="ghost" onClick={() => setOpen(!open)}>
+            <XIcon className="h-6 w-6" />
+          </Button>
+        </div>
+        <Sidebar className="min-h-full" />
+      </div>
+    </>
+  );
+};
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export const Sidebar = ({ className }: SidebarProps) => {
   return (
-    <nav
-      className={cn(
-        "pb-12 flex flex-col justify-between md:min-h-full",
-        className
-      )}
-    >
+    <nav className={cn("pb-12 flex flex-col justify-between", className)}>
       <div className="space-y-4 py-4">
         <div className="px-3 py-2">
           <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
@@ -29,7 +57,7 @@ export const Sidebar = ({ className }: SidebarProps) => {
           </div>
         </div>
       </div>
-      <div className="px-3 pt-2">
+      <div className="p-4">
         <Button variant="ghost" className="w-full justify-between">
           Connect
           <LogInIcon className="ml-2 h-4 w-4" />
@@ -38,6 +66,40 @@ export const Sidebar = ({ className }: SidebarProps) => {
     </nav>
   );
 };
+
+// if (isDesktop) {
+//   return (
+//     <Drawer
+//       open={open}
+//       onOpenChange={setOpen}
+//       direction="right"
+//       shouldScaleBackground
+
+//     >
+//       <DrawerTrigger asChild>
+//         <Button variant="ghost" className="m-2">
+//           <MenuIcon className="h-6 w-6" />
+//         </Button>
+//       </DrawerTrigger>
+//       <DrawerContent>
+//         <DrawerTitle>DWA MENU</DrawerTitle>
+//         <SidebarContent />
+//         {/* <DrawerHeader className="text-left">
+//           <DrawerTitle>Edit profile</DrawerTitle>
+//           <DrawerDescription>
+//             Make changes to your profile here. Click save when you're done.
+//           </DrawerDescription>
+//         </DrawerHeader>
+//         <ProfileForm className="px-4" />
+//         <DrawerFooter className="pt-2">
+//           <DrawerClose asChild>
+//             <Button variant="outline">Cancel</Button>
+//           </DrawerClose>
+//         </DrawerFooter> */}
+//       </DrawerContent>
+//     </Drawer>
+//   );
+// }
 
 interface SidebarMenuItemProps {
   icon: LucideIcon;
