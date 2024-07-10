@@ -1,8 +1,10 @@
+import { Typography } from "@/components/ui/typography";
+
 export const Settings = () => {
   return (
     <div>
-      <h1>Settings</h1>
-      <p>This is the settings page.</p>
+      <Typography variant="h1">Settings</Typography>
+      <Typography variant="p">This is the settings page.</Typography>
     </div>
   );
 };
