@@ -3,7 +3,6 @@ import {
   HouseIcon,
   MenuIcon,
   XIcon,
-  LogInIcon,
   SettingsIcon,
   LucideIcon,
 } from "lucide-react";
@@ -13,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
 import "./Sidebar.css";
+import { Web5Connection } from "@/web5/Web5Connection";
 
 export const SidebarButton = () => {
   const [open, setOpen] = useState(false);
@@ -58,48 +58,11 @@ export const Sidebar = ({ className }: SidebarProps) => {
         </div>
       </div>
       <div className="p-4">
-        <Button variant="ghost" className="w-full justify-between">
-          Connect
-          <LogInIcon className="ml-2 h-4 w-4" />
-        </Button>
+        <Web5Connection connectButtonClassName={"w-full justify-between"} />
       </div>
     </nav>
   );
 };
-
-// if (isDesktop) {
-//   return (
-//     <Drawer
-//       open={open}
-//       onOpenChange={setOpen}
-//       direction="right"
-//       shouldScaleBackground
-
-//     >
-//       <DrawerTrigger asChild>
-//         <Button variant="ghost" className="m-2">
-//           <MenuIcon className="h-6 w-6" />
-//         </Button>
-//       </DrawerTrigger>
-//       <DrawerContent>
-//         <DrawerTitle>DWA MENU</DrawerTitle>
-//         <SidebarContent />
-//         {/* <DrawerHeader className="text-left">
-//           <DrawerTitle>Edit profile</DrawerTitle>
-//           <DrawerDescription>
-//             Make changes to your profile here. Click save when you're done.
-//           </DrawerDescription>
-//         </DrawerHeader>
-//         <ProfileForm className="px-4" />
-//         <DrawerFooter className="pt-2">
-//           <DrawerClose asChild>
-//             <Button variant="outline">Cancel</Button>
-//           </DrawerClose>
-//         </DrawerFooter> */}
-//       </DrawerContent>
-//     </Drawer>
-//   );
-// }
 
 interface SidebarMenuItemProps {
   icon: LucideIcon;
