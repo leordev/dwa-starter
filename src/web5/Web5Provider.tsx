@@ -100,6 +100,7 @@ export const useWeb5 = () => {
     isConnecting,
     connect,
     userAgent,
+    dwn: web5Connection?.web5.dwn,
     did: web5Connection?.did,
     bearerDid,
   };

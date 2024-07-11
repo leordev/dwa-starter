@@ -11,6 +11,7 @@ export function toastSuccess(message: string, description?: string) {
 }
 
 export function toastError(message: string, error?: unknown) {
+  console.error("Toast Error >>>", { message, error });
   const errorMessage = error
     ? (error as Error)?.message || "Unknown error"
     : undefined;
