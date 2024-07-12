@@ -8,9 +8,10 @@ import { TodoDwnRepository, Task, BLANK_TASK } from "@/lib/todo-dwn-repository";
 import { TaskListLoader } from "./task-list-loader";
 import { TaskItem } from "./task-item";
 import { TaskForm } from "./task-form";
+import { drlFetchRecordJson } from "@/web5/drls";
 
 export const TodoList = () => {
-  const { dwn } = useWeb5();
+  const { dwn, did } = useWeb5();
 
   const [tasks, setTasks] = useState<Task[]>([]);
   const [taskInput, setTaskInput] = useState<Task>({ ...BLANK_TASK });
@@ -40,6 +41,13 @@ export const TodoList = () => {
     try {
       const tasks = await todoDwnRepository.listTasks();
       setTasks(tasks);
+
+      // Test DRL fetch -- TODO: remove!
+      if (tasks[0]) {
+        console.info({ tasks });
+        const task = await drlFetchRecordJson(did!, tasks[0].id!);
+        console.info("DRL Fetched Task Test", { task });
+      }
     } catch (error) {
       toastError("Error loading tasks", error);
     }
