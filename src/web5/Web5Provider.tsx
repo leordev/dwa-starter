@@ -1,10 +1,10 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 import { Web5, Web5ConnectResult } from "@web5/api";
-import { activatePolyfills } from "../web-features";
 
 import { Web5UserAgent } from "@web5/user-agent";
 import { BearerDid } from "@web5/dids";
+import { installProtocols } from "./protocols";
 
 interface Web5ContextProps {
   initialized: boolean;
@@ -29,11 +29,6 @@ export const Web5Provider: React.FC<{ children: React.ReactNode }> = ({
 
   useEffect(() => {
     console.log("Web5Provider initialized");
-
-    // Initialize Web5 Polyfills skipping ServiceWorker
-    // since its managed by vite-pwa in the sw.ts injection
-    activatePolyfills({ serviceWorker: false });
-
     setInitialized(true);
   }, []);
 
@@ -45,7 +40,11 @@ export const Web5Provider: React.FC<{ children: React.ReactNode }> = ({
     setIsConnecting(true);
 
     try {
-      const connection = await Web5.connect();
+      const connection = await Web5.connect({
+        techPreview: {
+          dwnEndpoints: ["https://dwn.tbddev.org/dwn2"],
+        },
+      });
       setWeb5Connection(connection);
       setIsConnecting(false);
       return connection;
@@ -66,8 +65,10 @@ export const Web5Provider: React.FC<{ children: React.ReactNode }> = ({
 
 export const useWeb5 = () => {
   const context = useContext(Web5Context);
+  const [protocolsInitialized, setProtocolsInitialized] = useState(false);
   const [bearerDid, setBearerDid] = useState<BearerDid | undefined>(undefined);
 
+  // TODO: refactor, installing proxy multiple times
   useEffect(() => {
     if (context.web5Connection && !bearerDid) {
       const loadBearerDid = async () => {
@@ -84,6 +85,15 @@ export const useWeb5 = () => {
         setBearerDid(identity.did);
       };
       loadBearerDid();
+
+      if (!protocolsInitialized) {
+        installProtocols(
+          context.web5Connection.web5.dwn,
+          context.web5Connection.did
+        ).then((installationResult) => {
+          setProtocolsInitialized(installationResult);
+        });
+      }
     }
   }, [context.web5Connection]);
 
