@@ -1,13 +1,16 @@
-# React + TypeScript + Vite
+# DWA Starter React
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Decentralized Web App: it's a Web5 Progressive Web App.
 
-Currently, two official plugins are available:
+## Why PWA?
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+It's a perfect match with Web5 DWNs since a PWA can work offline and DWN has a synced local storage.
 
-## Expanding the ESLint configuration
+## React + Vite-PWA
+
+This repo was created with vite-pwa, check the default instructions below.
+
+### Expanding the ESLint configuration
 
 If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
 
@@ -28,16 +31,3 @@ export default {
 - Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
 - Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
 - Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
-
-## error
-
-        else if ((t = globalThis == null ? void 0 : globalThis.navigator) != null && t.serviceWorker) {
-            if (!await navigator.serviceWorker.getRegistration("/")) {
-                const s = n.path || (globalThis.document ? (r = document == null ? void 0 : document.currentScript) == null ? void 0 : r.src :
-                >>>>> (i = import.meta) == null ? void 0 : i.url);
-                >>>>> Uncaught SyntaxError: Cannot use 'import.meta' outside a module (at sw.js:12:106921)
-
-                s && navigator.serviceWorker.register(s, {
-                    type: "module"
-                }).catch(a=>{
-                    console.error("DWeb networking feature installation failed: ", a)

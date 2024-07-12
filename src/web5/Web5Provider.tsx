@@ -29,10 +29,10 @@ export const Web5Provider: React.FC<{ children: React.ReactNode }> = ({
 
   useEffect(() => {
     console.log("Web5Provider initialized");
-    activatePolyfills({
-      injectStyles: true,
-      links: true,
-    });
+
+    // Initialize Web5 Polyfills skipping ServiceWorker
+    // since its managed by vite-pwa in the sw.ts injection
+    activatePolyfills({ serviceWorker: false });
 
     setInitialized(true);
   }, []);

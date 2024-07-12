@@ -36,7 +36,7 @@ export class TodoDwnRepository {
   }
 
   async createTask(task: Task) {
-    const { status } = await this.dwn.records.create({
+    const { status, record } = await this.dwn.records.create({
       data: task,
       message: {
         schema: TASK_SCHEMA,
@@ -46,6 +46,9 @@ export class TodoDwnRepository {
     });
     if (status.code !== 202) {
       throw Error(status.detail);
+    }
+    if (record) {
+      await record.send();
     }
   }
 
@@ -68,6 +71,7 @@ export class TodoDwnRepository {
     if (status.code !== 202) {
       throw Error(status.detail);
     }
+    await record.send();
   }
 
   async deleteTask(recordId: string) {

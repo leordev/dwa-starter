@@ -29,8 +29,8 @@ registerRoute(
   new NavigationRoute(createHandlerBoundToURL("index.html"), { allowlist })
 );
 
+// Activate Web5 Service Worker Polyfills
 activatePolyfills({
-  serviceWorker: true,
   onCacheCheck() {
     return {
       ttl: 30000,
