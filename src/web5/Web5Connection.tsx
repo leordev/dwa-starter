@@ -1,7 +1,7 @@
 import { LogInIcon, Loader2Icon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { useWeb5 } from "./Web5Provider";
+import { useWeb5 } from "./use-web5";
 
 interface Web5ConnectionProps {
   connectButtonClassName?: string;

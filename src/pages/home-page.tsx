@@ -1,7 +1,7 @@
 import workplaceImage from "../assets/workplace.svg";
 
 import { Web5Connection } from "@/web5/Web5Connection";
-import { useWeb5 } from "@/web5/Web5Provider";
+import { useWeb5 } from "@/web5";
 import { Typography } from "@/components/ui/typography";
 import { TodoList } from "@/components/todo-list";
 
@@ -9,11 +9,11 @@ import { TodoList } from "@/components/todo-list";
  * Home page: landing page with invitation to connect
  */
 export const HomePage = () => {
-  const { web5Connection } = useWeb5();
+  const { isConnected } = useWeb5();
 
   return (
     <div className="w-full">
-      {web5Connection ? (
+      {isConnected ? (
         <TodoList />
       ) : (
         <div className="text-center space-y-8">

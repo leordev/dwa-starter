@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { useWeb5 } from "@/web5/Web5Provider";
+import { useWeb5 } from "@/web5";
 import { Typography } from "@/components/ui/typography";
 
 import { toastError, toastSuccess } from "@/lib/utils";
@@ -8,51 +8,46 @@ import { TodoDwnRepository, Task, BLANK_TASK } from "@/lib/todo-dwn-repository";
 import { TaskListLoader } from "./task-list-loader";
 import { TaskItem } from "./task-item";
 import { TaskForm } from "./task-form";
-import { drlFetchRecordJson } from "@/web5/drls";
 
 export const TodoList = () => {
-  const { dwn, did } = useWeb5();
+  const { dwn } = useWeb5();
 
   const [tasks, setTasks] = useState<Task[]>([]);
   const [taskInput, setTaskInput] = useState<Task>({ ...BLANK_TASK });
   const [isLoading, setIsLoading] = useState(false);
 
   const todoDwnRepository = useMemo(() => {
-    console.info("todoDwnRepository useMemo set dwn");
+    console.info("todoDwnRepository useMemo set dwn", { dwn });
     if (!dwn) {
       return undefined;
     }
     return new TodoDwnRepository(dwn);
   }, [dwn]);
 
+  const loadTasks = useCallback(async () => {
+    if (!todoDwnRepository) {
+      return;
+    }
+    setIsLoading(true);
+    try {
+      const tasks = await todoDwnRepository.listTasks();
+      setTasks(tasks);
+    } catch (error) {
+      toastError("Error loading tasks", error);
+    }
+    setIsLoading(false);
+  }, [todoDwnRepository]);
+
   useEffect(() => {
     console.info("todoDwnRepository loadTasks effect");
     if (todoDwnRepository) {
       loadTasks();
     }
-  }, [todoDwnRepository]);
+  }, [todoDwnRepository, loadTasks]);
 
   if (!todoDwnRepository) {
     return <div>Invalid Web5 connection</div>;
   }
-
-  const loadTasks = async () => {
-    setIsLoading(true);
-    try {
-      const tasks = await todoDwnRepository.listTasks();
-      setTasks(tasks);
-
-      // Test DRL fetch -- TODO: remove!
-      if (tasks[0]) {
-        console.info({ tasks });
-        const task = await drlFetchRecordJson(did!, tasks[0].id!);
-        console.info("DRL Fetched Task Test", { task });
-      }
-    } catch (error) {
-      toastError("Error loading tasks", error);
-    }
-    setIsLoading(false);
-  };
 
   const handleTaskSubmit = async (
     formEvent: React.FormEvent<HTMLFormElement>

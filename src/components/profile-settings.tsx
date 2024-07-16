@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Typography } from "./ui/typography";
-import { useWeb5 } from "@/web5/Web5Provider";
+import { useWeb5 } from "@/web5";
 import { profile } from "@/web5/protocols";
 import { drlReadProtocolJson, drlReadProtocolUrl } from "@/web5/drls";
 import { toastError, toastSuccess } from "@/lib/utils";
@@ -32,6 +32,7 @@ export const ProfileSettings = () => {
   const loadProfile = async () => {
     try {
       const profileRecord = await drlReadProtocolJson(did, profile.uri, "name");
+      // console.info({ profileRecord }); // TODO: remove
       setDisplayName(profileRecord?.displayName);
       setHasProfileName(true);
     } catch (e) {
@@ -106,13 +107,6 @@ export const ProfileSettings = () => {
       console.log(e);
       toastError("There was a problem saving your profile image", e);
     }
-
-    // TODO: review hack?
-    // if (record) {
-    //   record.cache = record.cache || {};
-    //   record.cache.blob = blob;
-    //   record.cache.uri = blob ? URL.createObjectURL(blob) : undefined;
-    // }
     return record;
   };
 

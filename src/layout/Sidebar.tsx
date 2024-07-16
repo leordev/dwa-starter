@@ -15,7 +15,7 @@ import { useState } from "react";
 import "./Sidebar.css";
 import { Web5Connection } from "@/web5/Web5Connection";
 import { ModeToggle } from "@/components/mode-toggle";
-import { useWeb5 } from "@/web5/Web5Provider";
+import { useWeb5 } from "@/web5";
 
 export const SidebarButton = () => {
   const [open, setOpen] = useState(false);
