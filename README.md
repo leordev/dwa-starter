@@ -6,6 +6,22 @@ Decentralized Web App: it's a Web5 Progressive Web App.
 
 It's a perfect match with Web5 DWNs since a PWA can work offline and DWN has a synced local storage.
 
+## Running Locally
+
+```sh
+pnpm i
+docker compose up -d
+pnpm dev
+```
+
+## Building App
+
+```sh
+pnpm build
+```
+
+Deploy the `dist` folder to the server. It's just a static PWA! Please make sure all the settings are optimized for production, including your application descriptions, icons, service workers, polyfills and configurations (ie. check vite-pwa eslint recommendations below).
+
 ## React + Vite-PWA
 
 This repo was created with vite-pwa, check the default instructions below.

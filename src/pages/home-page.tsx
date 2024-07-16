@@ -5,7 +5,10 @@ import { useWeb5 } from "@/web5/Web5Provider";
 import { Typography } from "@/components/ui/typography";
 import { TodoList } from "@/components/todo-list";
 
-export const Home = () => {
+/**
+ * Home page: landing page with invitation to connect
+ */
+export const HomePage = () => {
   const { web5Connection } = useWeb5();
 
   return (

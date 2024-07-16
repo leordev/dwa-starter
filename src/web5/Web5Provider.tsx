@@ -40,11 +40,12 @@ export const Web5Provider: React.FC<{ children: React.ReactNode }> = ({
     setIsConnecting(true);
 
     try {
-      const connection = await Web5.connect({
+      const connectOptions = {
         techPreview: {
-          dwnEndpoints: ["https://dwn.tbddev.org/dwn2"],
+          dwnEndpoints: ["http://localhost:3000"],
         },
-      });
+      };
+      const connection = await Web5.connect(connectOptions);
       setWeb5Connection(connection);
       setIsConnecting(false);
       return connection;
@@ -105,6 +106,8 @@ export const useWeb5 = () => {
 
   const userAgent = web5Connection?.web5.agent as Web5UserAgent;
 
+  const isConnected = web5Connection !== undefined;
+
   return {
     web5Connection,
     isConnecting,
@@ -113,5 +116,6 @@ export const useWeb5 = () => {
     dwn: web5Connection?.web5.dwn,
     did: web5Connection?.did,
     bearerDid,
+    isConnected,
   };
 };

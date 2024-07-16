@@ -1,50 +1,27 @@
 import { DwnApi } from "@web5/api";
 
-const addSchemas = (config: any) => {
-  const types = config.types;
-  const protocolUri = config.protocol;
-  return Object.entries(types).reduce((result: any, [key, value]: any) => {
-    if (value.dataFormats.some((format: string) => format.match("json"))) {
-      result[key] = types[key].schema = protocolUri + "/schemas/" + key;
-    }
-    return result;
-  }, {});
-};
+const protocolSchema = "https://schema.org/ProfileSample";
+const protocolTypeNameSchema = "https://schema.org/ProfileSample/schemas/name";
 
-const profileDef = {
+const profileDefinition = {
   published: true,
-  protocol: "https://schema.org/ProfileSample",
+  protocol: protocolSchema,
   types: {
     name: {
       dataFormats: ["application/json"],
-      schema: "https://schema.org/ProfileSample/schemas/name",
+      schema: protocolTypeNameSchema,
     },
     avatar: { dataFormats: ["image/gif", "image/png", "image/jpeg"] },
   },
   structure: { name: {}, avatar: {} },
 };
 
-const profileDefinition = {
-  published: true,
-  protocol: "https://schema.org/ProfileSample",
-  types: {
-    name: {
-      dataFormats: ["application/json"],
-    },
-    avatar: {
-      dataFormats: ["image/gif", "image/png", "image/jpeg"],
-    },
-  },
-  structure: {
-    name: {},
-    avatar: {},
-  },
-};
-
 export const profile = {
-  uri: profileDefinition.protocol,
-  schemas: addSchemas(profileDefinition),
   definition: profileDefinition,
+  uri: protocolSchema,
+  schemas: {
+    name: protocolTypeNameSchema,
+  },
 };
 
 export const byUri = {
@@ -57,20 +34,20 @@ export const installProtocols = async (dwn: DwnApi, did: string) => {
   console.info(JSON.stringify(profileDefinition), { profile });
   try {
     for (const protocolUri in byUri) {
-      let record = installed.protocols.find(
+      const record = installed.protocols.find(
         (record) => protocolUri === record.definition.protocol
       );
-      // if (!record) {
-      console.info("installing protocol: " + protocolUri);
-      const definition = byUri[protocolUri].definition;
-      configurationPromises.push(
-        dwn.protocols.configure({
-          message: { definition },
-        })
-      );
-      // } else {
-      //   console.info("protocol already installed: " + protocolUri);
-      // }
+      if (!record) {
+        console.info("installing protocol: " + protocolUri);
+        const definition = byUri[protocolUri].definition;
+        configurationPromises.push(
+          dwn.protocols.configure({
+            message: { definition },
+          })
+        );
+      } else {
+        console.info("protocol already installed: " + protocolUri);
+      }
     }
 
     const configurationResponses = await Promise.all(configurationPromises);

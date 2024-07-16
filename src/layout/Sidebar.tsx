@@ -4,6 +4,7 @@ import {
   MenuIcon,
   XIcon,
   SettingsIcon,
+  LifeBuoyIcon,
   LucideIcon,
 } from "lucide-react";
 
@@ -14,6 +15,7 @@ import { useState } from "react";
 import "./Sidebar.css";
 import { Web5Connection } from "@/web5/Web5Connection";
 import { ModeToggle } from "@/components/mode-toggle";
+import { useWeb5 } from "@/web5/Web5Provider";
 
 export const SidebarButton = () => {
   const [open, setOpen] = useState(false);
@@ -46,6 +48,7 @@ interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const Sidebar = ({ className, onItemClick }: SidebarProps) => {
+  const { isConnected } = useWeb5();
   return (
     <nav className={cn("pb-12 flex flex-col justify-between", className)}>
       <div className="space-y-4 py-4">
@@ -61,11 +64,19 @@ export const Sidebar = ({ className, onItemClick }: SidebarProps) => {
               label="Home"
               path="/"
             />
+            {isConnected && (
+              <SidebarMenuItem
+                onItemClick={onItemClick}
+                icon={SettingsIcon}
+                label="Settings"
+                path="/settings"
+              />
+            )}
             <SidebarMenuItem
               onItemClick={onItemClick}
-              icon={SettingsIcon}
-              label="Settings"
-              path="/settings"
+              icon={LifeBuoyIcon}
+              label="About"
+              path="/about"
             />
           </div>
         </div>
